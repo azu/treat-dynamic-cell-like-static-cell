@@ -8,8 +8,6 @@
 @property(nonatomic, retain) NSMutableArray *dataSource;
 @property(nonatomic, strong) NSArray * sectionTitles;
 
-- (IBAction)addStampCell:(id)sender;
-
 #pragma mark - user defined runtime attributes
 @property(nonatomic, strong) NSString *idNameCell;
 @property(nonatomic, strong) NSString *idTimeCell;

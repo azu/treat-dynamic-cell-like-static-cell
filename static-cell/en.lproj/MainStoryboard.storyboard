@@ -111,7 +111,7 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.82691424759400212" green="1" blue="0.93307757510310929" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="addButton" destination="nUw-oS-uVY" id="mhx-cN-9zX"/>
                                 </connections>
@@ -123,13 +123,7 @@
                             <outlet property="delegate" destination="12" id="9mi-Zb-O8z"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Master" id="36">
-                        <barButtonItem key="rightBarButtonItem" title="追加" style="done" id="ZdR-yB-oDX">
-                            <connections>
-                                <action selector="addCell:" destination="12" id="uVz-7m-Txi"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Master" id="36"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="idNameCell" value="kCellName"/>
                         <userDefinedRuntimeAttribute type="string" keyPath="idTimeCell" value="kCellTime"/>
@@ -144,12 +138,12 @@
     <classes>
         <class className="AddStampCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/AddStampCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="addButton" candidateClass="UIButton"/>
+            </relationships>
         </class>
         <class className="MyTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MyTableViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="addCell:"/>
-            </relationships>
         </class>
         <class className="TimeStampCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/TimeStampCell.h"/>

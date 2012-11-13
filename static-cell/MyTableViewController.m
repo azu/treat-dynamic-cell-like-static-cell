@@ -29,6 +29,15 @@
     return self;
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+
+    // DataSource init
+    self.sectionTitles = @[@"名前", @"タイムスタンプ"];
+    [self initDataSource];
+
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -36,9 +45,10 @@
 #pragma mark - View lifecycle
 
 - (void)addTimeStamp {
-    [self.timeStamps addObject:[NSDate date]];
-    // timeStampのdataSource
-    [self.timeStampDataSource addObject:@{
+    // タイムスタンプの追加
+    [_timeStamps addObject:[NSDate date]];
+    // dataSourceにも数を合わせる
+    [_timeStampDataSource addObject:@{
     kCellIdentifier: self.idTimeCell
     }];
 }
@@ -72,11 +82,15 @@
     [NSDate date]
     ] mutableCopy];
     // timeStampのdataSource
-    self.timeStampDataSource = [@[@{
+    self.timeStampDataSource = [[NSMutableArray alloc] initWithArray:@[@{
     kCellIdentifier: self.idTimeCell
-    }] mutableCopy];
+    }]];
 
 
+    [self updateDataSource];
+}
+
+- (void)updateDataSource {
     self.dataSource = [[NSMutableArray alloc] initWithArray:@[
     // static
     @[
@@ -85,18 +99,19 @@
     }
     ],
     // dynamic
-    self.timeStampDataSource
+    [self timeStampAddDataSource]
     ]];
+}
 
+- (NSArray *)timeStampAddDataSource {
+    NSArray *array = [self.timeStampDataSource copy];
+    return [array arrayByAddingObject:@{
+    kCellIdentifier:self.idAddCell
+    }];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    // DataSource init
-    self.sectionTitles = @[@"名前", @"タイムスタンプ"];
-    [self initDataSource];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -173,17 +188,6 @@
     NSArray *sectionDataSource = [self.dataSource objectAtIndex:(NSUInteger) section];
     return [sectionDataSource count];
 }
-#pragma mark - footer timestamp
-// タイムスタンプのfooterには追加ボタンを付ける
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    NSDictionary *dictionary = [[self.dataSource objectAtIndex:section] lastObject];
-    // タイムスタンプのセル
-    if (![[dictionary objectForKey:kCellIdentifier] isEqualToString:self.idTimeCell]){
-        return 0.0f;
-    }
-    return 44.0f;
-}
-
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     NSDictionary *dictionary = [[self.dataSource objectAtIndex:section] lastObject];
     // タイムスタンプのセル
@@ -194,7 +198,7 @@
     AddStampCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell){
         cell = [[AddStampCell alloc]
-                                 initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+                              initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     [cell.addButton addTarget:self action:@selector(addStampCell:) forControlEvents:UIControlEventTouchUpInside];
     return cell;
@@ -216,6 +220,12 @@
         cell = [[UITableViewCell alloc]
                                  initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
+
+    // add event
+    if ([cellIdentifier isEqualToString:self.idAddCell]){
+        [[(AddStampCell *) cell addButton]
+                                addTarget:self action:@selector(handleAddCell:event:) forControlEvents:UIControlEventTouchUpInside];
+    }
     // Configure the cell...
     cell.accessoryType = UITableViewCellAccessoryNone;
     [self updateCell:cell atIndexPath:indexPath];
@@ -223,6 +233,18 @@
     return cell;
 }
 
+- (void)handleAddCell:(UIButton *)sender event:(UIEvent *)event {
+    NSIndexPath *indexPath = [self indexPathForControlEvent:event];
+    [self addStampCellAndInsert:indexPath];
+}
+
+// UIControlEventからタッチ位置のindexPathを取得する
+- (NSIndexPath *)indexPathForControlEvent:(UIEvent *)event {
+    UITouch *touch = [[event allTouches] anyObject];
+    CGPoint p = [touch locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    return indexPath;
+}
 //--------------------------------------------------------------//
 #pragma mark -- UITableViewDelegate --
 //--------------------------------------------------------------//
@@ -234,9 +256,14 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-// タイムスタンプを追加する
-- (IBAction)addStampCell:(id)sender {
+
+- (void)addStampCellAndInsert:(NSIndexPath *)indexPath {
     [self addTimeStamp];
-    [self.tableView reloadData];
+    [self updateDataSource];
+    //テーブルの最後の行にアイテムを追加
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    //追加した行へスクロール
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
+
 @end
