@@ -225,9 +225,14 @@
 
 - (void)tableView:(UITableView *)tableView
         didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
     // ハイライトを外す
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    NSDictionary *dictionary = [self dataForIndexPath:indexPath];
+    NSString *cellIdentifier = [dictionary objectForKey:kCellIdentifier];
+    if ([cellIdentifier isEqualToString:self.idAddCell]){
+        [self addStampCellAndInsert:indexPath];
+    }
 }
 
 

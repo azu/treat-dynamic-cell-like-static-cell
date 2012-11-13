@@ -67,7 +67,6 @@
 				17B5C3E2F613CB42624D7545 /* AddStampCell.m */,
 				17B5CBD485A566C653E164F3 /* AddStampCell.h */,
 			);
-			lastKnownFileType = text;
 			path = CustomCell;
 			sourceTree = "<group>";
 		};
@@ -278,6 +277,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "static-cell/static-cell-Prefix.pch";
 				INFOPLIST_FILE = "static-cell/static-cell-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -289,6 +289,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "static-cell/static-cell-Prefix.pch";
 				INFOPLIST_FILE = "static-cell/static-cell-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -313,6 +314,7 @@
 				73AB576D1650D67D00CDB49F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
