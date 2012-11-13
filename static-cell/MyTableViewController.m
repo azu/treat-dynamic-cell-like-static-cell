@@ -82,7 +82,7 @@
     }]];
 
     // セクションタイトル
-    self.sectionTitles = @[@"名前", @"タイムスタンプ"];
+    self.sectionTitles = @[@"名前", @"タイムスタンプ", @"UI"];
 
     [self updateDataSource];
 }
@@ -96,7 +96,13 @@
         }
     ],
     // dynamic
-    [self timeStampAddDataSource]
+    [self timeStampAddDataSource],
+    // static
+    @[
+        @{
+        kCellIdentifier: self.idSwitchCell
+        }
+    ]
     ]];
 }
 

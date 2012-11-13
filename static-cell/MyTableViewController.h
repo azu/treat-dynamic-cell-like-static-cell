@@ -11,6 +11,7 @@
 @property(nonatomic, strong) NSString *idNameCell;
 @property(nonatomic, strong) NSString *idTimeCell;
 @property(nonatomic, strong) NSString *idAddCell;
+@property(nonatomic, strong) NSString *idSwitchCell;
 
 @property(nonatomic, strong) NSMutableArray *timeStampDataSource;
 @property(nonatomic, strong) NSMutableArray *timeStamps;
