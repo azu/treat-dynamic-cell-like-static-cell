@@ -2,7 +2,6 @@
 
 @interface MyTableViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource> {
 
-
 }
 
 @property(nonatomic, retain) NSMutableArray *dataSource;

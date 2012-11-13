@@ -9,10 +9,6 @@
 @end
 
 @implementation MyTableViewController {
-@private
-    id _sectionTitles;
-    NSMutableArray *_timeStampDataSource;
-    NSMutableArray *_timeStamps;
 }
 
 @synthesize sectionTitles = _sectionTitles;
@@ -33,7 +29,6 @@
     [super awakeFromNib];
 
     // DataSource init
-    self.sectionTitles = @[@"名前", @"タイムスタンプ"];
     [self initDataSource];
 
 }
@@ -79,13 +74,15 @@
 
     // 最初に1つだけ置いておく
     self.timeStamps = [@[
-    [NSDate date]
+        [NSDate date]
     ] mutableCopy];
     // timeStampのdataSource
     self.timeStampDataSource = [[NSMutableArray alloc] initWithArray:@[@{
-    kCellIdentifier: self.idTimeCell
+        kCellIdentifier: self.idTimeCell
     }]];
 
+    // セクションタイトル
+    self.sectionTitles = @[@"名前", @"タイムスタンプ"];
 
     [self updateDataSource];
 }
@@ -94,15 +91,16 @@
     self.dataSource = [[NSMutableArray alloc] initWithArray:@[
     // static
     @[
-    @{
-    kCellIdentifier: self.idNameCell
-    }
+        @{
+        kCellIdentifier: self.idNameCell
+        }
     ],
     // dynamic
     [self timeStampAddDataSource]
     ]];
 }
 
+// 末尾にAddCellを追加したdataSourceを返す
 - (NSArray *)timeStampAddDataSource {
     NSArray *array = [self.timeStampDataSource copy];
     return [array arrayByAddingObject:@{
@@ -116,9 +114,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-    // Update Navigation
-    [self updateNavigationItemAnimated:animated];
 
     // deselect cell
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
@@ -143,12 +138,6 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-//--------------------------------------------------------------//
-#pragma mark -- ViewOutlets Update --
-//--------------------------------------------------------------//
-
-- (void)updateNavigationItemAnimated:(BOOL)animated {
-}
 #pragma mark - Cell Operation
 - (void)updateVisibleCells {
     // セルの表示更新
@@ -187,21 +176,6 @@
              numberOfRowsInSection:(NSInteger)section {
     NSArray *sectionDataSource = [self.dataSource objectAtIndex:(NSUInteger) section];
     return [sectionDataSource count];
-}
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    NSDictionary *dictionary = [[self.dataSource objectAtIndex:section] lastObject];
-    // タイムスタンプのセル
-    if (![[dictionary objectForKey:kCellIdentifier] isEqualToString:self.idTimeCell]){
-        return nil;
-    }
-    NSString *cellIdentifier = self.idAddCell;
-    AddStampCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (!cell){
-        cell = [[AddStampCell alloc]
-                              initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
-    [cell.addButton addTarget:self action:@selector(addStampCell:) forControlEvents:UIControlEventTouchUpInside];
-    return cell;
 }
 
 - (id)dataForIndexPath:(NSIndexPath *)indexPath {
